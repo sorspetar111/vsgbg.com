@@ -1,12 +1,12 @@
 public class BinanceService : BackgroundService
 {
-    private readonly BinanceWebSocketClient _client;
+    // private readonly BinanceWebSocketClient _client;
     private readonly PriceController _priceController;  
     private Timer _timer;
 
-    public BinanceService(BinanceWebSocketClient client, PriceController priceController)
+    public BinanceService(/*BinanceWebSocketClient client, */ PriceController priceController)
     {
-        _client = client;
+        //_client = client;
         _priceController = priceController;
     }
 
@@ -36,7 +36,7 @@ public class BinanceService : BackgroundService
 
     private void StartBinanceService(object state)
     {
-        _client.Start();
+        // _client.Start();
         
         // Call FetchPrices method of PriceController
         _priceController.FetchPrices().GetAwaiter().GetResult();
@@ -45,7 +45,7 @@ public class BinanceService : BackgroundService
     public override async Task StopAsync(CancellationToken stoppingToken)
     {
         _timer?.Change(Timeout.Infinite, 0);
-        _client.Stop();
+        // _client.Stop();
         await Task.CompletedTask;
     }
 
