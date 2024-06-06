@@ -1,0 +1,9 @@
+
+Tests:
+
+curl -H "Accept: application/json" https://localhost:5001/api/products
+curl -H "Accept: application/xml" https://localhost:5001/api/products
+
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"FirstName":"John","LastName":"Doe"}' https://localhost:5001/api/students/register
+curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X POST -d '<RegisterStudentRequestDTO><FirstName>John</FirstName><LastName>Doe</LastName></RegisterStudentRequestDTO>' https://localhost:5001/api/students/register
+

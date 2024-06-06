@@ -1,0 +1,31 @@
+
+Task description:
+Create an application which:
+
+Uses the Binance WebSocket API to collect price data for the BTCUSDT, ADAUSDT and ETHUSDT symbols ( https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md )
+
+Store the price information for the symbols in a relational database ( feel free to use any approach at all for data storage, including an ORM )
+
+Create an HTTP API which can accept and return both XML and JSON ( depending on Content-Type Header ) with the following endpoints:
+
+GET /api/{symbol}/24hAvgPrice - Returns the average price for the last 24h of data in the database ( or the oldest available, if 24h of data is not available )
+
+{symbol} - The symbol the average price is being calculated for
+GET /api/{symbol}/SimpleMovingAverage?n={numberOfDataPoints}&p={timePeriod}&s=[startDateTime] - Return the current Simple Moving average of the symbol's price ( More info: Investopedia)
+
+{symbol} - The symbol the average price is being calculated for
+n - The amount of data points
+p - The time period represented by each data point. Acceptable values: 1w, 1d, 30m, 5m, 1m
+s - The datetime from which to start the SMA calculation ( a date )
+Examples:
+
+/api/BTCUSDT/SimpleMovingAverage?n=10&p=1d&s=2021-12-15 Explanation: Fetch the simple moving average of the BTCUSDT symbol from the last 10 days, starting on the 15th of december, 2021
+/api/ADAUSDT/SimpleMovingAverage?n=100&p=1w Explanation: Fetch the simple moving average of the ADAUSDT symbol from the last 100 weeks, starting on the current date
+/api/ETHUSDT/SimpleMovingAverage?n=200&p=5m Explanation: Fetch the simple moving average of the ETHUSDT symbol from the last 200 5 minute intervals, starting on the current date
+Use caching on the backend to improve the performance of the application where applicable
+
+Also, create a Console application, which can execute the following commands:
+
+24h {symbol} - Same as the /api/{symbol}/24hAvgPrice endpoint
+sma {symbol} {n} {p} {s} - Same as the /api/{symbol}/SimpleMovingAverage endpoint
+Please include instructions on how to build and run the application
