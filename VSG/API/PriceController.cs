@@ -23,7 +23,7 @@ public class PriceController : ControllerBase
         _cache = cache;
         _binanceWebSocketClient = binanceWebSocketClient;
 
-        Connect();
+        // Connect();
     }
 
     [HttpGet("{symbol}/24hAvgPrice")]
@@ -129,6 +129,9 @@ public class PriceController : ControllerBase
     [HttpGet("fetchPrices")]
     public async Task<IActionResult> FetchPrices()
     {
+
+        Connect();
+        
         List<decimal> prices = new List<decimal>();
 
         // Subscribe to WebSocket messages
@@ -148,6 +151,8 @@ public class PriceController : ControllerBase
             // Do we need to save subscribed prices into our DB?
             await _dbContext.PriceData.AddAsync(priceData);
             await _dbContext.SaveChangesAsync();
+
+            // Disconnect();
         });
 
         return Ok(prices);
