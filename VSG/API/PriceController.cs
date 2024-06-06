@@ -141,7 +141,7 @@ public class PriceController : ControllerBase
             prices.Add(tickerData.LastPrice);
 
             // Save price data to database
-            var priceData = new PriceData
+            var priceData = new Price
             {
                 Symbol = symbol.ToUpper(),
                 Price = tickerData.LastPrice,
@@ -149,7 +149,7 @@ public class PriceController : ControllerBase
             };
 
             // Do we need to save subscribed prices into our DB?
-            await _dbContext.PriceData.AddAsync(priceData);
+            await _dbContext.Prices.AddAsync(priceData);
             await _dbContext.SaveChangesAsync();
 
             // Disconnect();
