@@ -22,6 +22,8 @@ public class PriceController : ControllerBase
         _dbContext = dbContext;
         _cache = cache;
         _binanceWebSocketClient = binanceWebSocketClient;
+
+        Connect();
     }
 
     [HttpGet("{symbol}/24hAvgPrice")]
@@ -179,6 +181,16 @@ public class PriceController : ControllerBase
             default:
                 return false;
         }
+    }
+
+    private void Connect()
+    {
+        _binanceWebSocketClient.Start();
+    }
+    
+    private void Disconnect()
+    {
+        _binanceWebSocketClient.Stop();
     }
 
 
