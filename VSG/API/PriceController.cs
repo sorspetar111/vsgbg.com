@@ -38,7 +38,7 @@ public class PriceController : ControllerBase
 
         // If not in cache, query the database
         var yesterday = DateTime.UtcNow.AddDays(-1);
-        var prices = await _dbContext.PriceData
+        var prices = await _dbContext.Prices
             .Where(p => p.Symbol == symbol && p.Timestamp >= yesterday)
             .Select(p => p.Price)
             .ToListAsync();
