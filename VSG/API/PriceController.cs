@@ -124,30 +124,32 @@ public class PriceController : ControllerBase
         return Ok(sma);
     }
 
-
-
-
-
-
-
     [HttpGet("fetchPrices")]
     public async Task<IActionResult> FetchPrices()
     {
         List<decimal> prices = new List<decimal>();
 
         // Subscribe to WebSocket messages
-        _binanceWebSocketClient.SubscribeToTickerUpdates(symbols: new string[] { "btcusdt", "adausdt", "ethusdt" }, callback: (symbol, data) =>
+        _binanceWebSocketClient.SubscribeToTickerUpdates(symbols: new string[] { "btcusdt", "adausdt", "ethusdt" }, callback: async (symbol, data) =>
         {
             var tickerData = JsonConvert.DeserializeObject<BinanceTickerData>(data);
             prices.Add(tickerData.LastPrice);
-        });
 
-        // Wait for 10 seconds to receive data
-        await Task.Delay(TimeSpan.FromSeconds(10));
+            // Save price data to database
+            var priceData = new PriceData
+            {
+                Symbol = symbol.ToUpper(),
+                Price = tickerData.LastPrice,
+                Timestamp = DateTime.UtcNow
+            };
+
+            // Do we need to save subscribed prices into our DB?
+            await _dbContext.PriceData.AddAsync(priceData);
+            await _dbContext.SaveChangesAsync();
+        });
 
         return Ok(prices);
     }
-
 
     private bool IsValidTimePeriod(string period, bool string = true)
     {
