@@ -57,4 +57,9 @@ public class BinanceWebSocketClient
 
 
     }
+
+    public void Disconnect()
+    {
+        _webSocket.Dispose();
+    }
 }
