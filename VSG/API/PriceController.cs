@@ -191,6 +191,7 @@ public class PriceController : ControllerBase
     private void Disconnect()
     {
         _binanceWebSocketClient.Stop();
+        _binanceWebSocketClient.Disconnect();
     }
 
 
